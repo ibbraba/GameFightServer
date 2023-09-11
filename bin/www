@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+/**
+ * Ce script démarre le serveur HTTP pour notre application Express.
+ */
+
+// Importation des modules nécessaires
+const app = require('../app');  // Importation de notre application Express
+const http = require('http');  // Module natif Node.js pour créer un serveur HTTP
+
+/**
+ * Configuration du port d'écoute du serveur.
+ * Utilise la valeur de l'environnement PORT si disponible, sinon 3000 par défaut.
+ */
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Création du serveur HTTP à partir de notre application Express.
+ */
+const server = http.createServer(app);
+
+// Démarrage du serveur sur le port spécifié
+server.listen(port);
+server.on('error', onError);         // En cas d'erreur
+server.on('listening', onListening); // Une fois le serveur démarré
+
+/**
+ * Fonction pour normaliser un port (le transformer en nombre, chaîne ou false).
+ */
+function normalizePort(val) {
+    const port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        return val;  
+    }
+
+    if (port >= 0) {
+        return port; 
+    }
+
+    return false;    
+}
+
+/**
+ * Gestionnaire d'erreurs pour le serveur HTTP.
+ */
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+
+    // Messages d'erreur spécifiques pour certains types d'erreurs courantes
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' nécessite des privilèges élevés');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' est déjà utilisé');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Gestionnaire d'événements pour le démarrage du serveur.
+ */
+function onListening() {
+    const addr = server.address();
+    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+    console.log('Le serveur fonctionne correctement sur ' + bind);
+}
