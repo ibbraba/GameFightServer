@@ -19,7 +19,7 @@ exports.postRegister = async (req, res) => {
         });
 
         console.log("User successfully created in DB");
-        res.redirect('/login');
+        res.send('OK');
     } catch (error) {
         console.error(error);
      
@@ -31,32 +31,33 @@ exports.postLogin = async (req, res) => {
     try {
 
         console.log("Post login in controller");
-        const user = await User.findOne({username: req.body.username});
+        
+
+        console.log(req.body.username.username);
+        console.log(req.body.password.password);
+        const user = await User.findOne({username: req.body.username.username});
         console.log(user)
 
-        if (user && await bcryptjs.compare(req.body.password, user.password)) {
+        if (user && await bcryptjs.compare(req.body.password.password, user.password)) {
             
             // création du token
             console.log("User connected, creating token and redirecting ...");
             const token = jwt.sign( { 
             userId: user._id, username: user.username },
             process.env.JWT_SECRET,
-            { expiresIn: '2h' }
+            { expiresIn: '2h', 
+            algorithm : "HS256" }
             );
-            res.cookie('token', token, {
-                expire: new Date(Date.now() + 7200000), // expiration dans 2 heures
-                httpOnly: true,
-                secure: true // à activer si HTTPS
-            });
-            res.redirect('/profil');
+       
+            res.send(token);
         } else {
 
-            console.log("Invalid credentials, back to login");
-            res.redirect('/login');
+            res.send("Invalid credentials, back to login");
+           
         }
     } catch (error) {
-        console.error(error);
-        res.redirect('/login');
+        res.send(error);
+    
     };          
 
 };
