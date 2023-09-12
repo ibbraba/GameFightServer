@@ -8,7 +8,7 @@ dotenv.config();
 
 const { isLoggedIn } = require("../middlewares/auth")
 
-exports.postValidate = async(req, res) => { 
+exports.getValidate = async(req, res) => { 
         console.log("POST validate req received");
        const isUserLoggedIn = isLoggedIn(req, res);
 

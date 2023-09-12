@@ -14,6 +14,6 @@ router.post("/private/create", gameController.postCreate, isLoggedIn)
 
 router.get("/private/caracter", gameController.getCaracters, isLoggedIn)
 
-router.post("/validate", authController.postValidate)
+router.get("/validate", authController.getValidate)
 
 module.exports = router
