@@ -6,6 +6,16 @@ const bcryptjs = require('bcryptjs');
 // Chargement des variables d'environnement
 dotenv.config();
 
+const { isLoggedIn } = require("../middlewares/auth")
+
+exports.postValidate = async(req, res) => { 
+        console.log("POST validate req received");
+       const isUserLoggedIn = isLoggedIn(req, res);
+
+       res.send(isUserLoggedIn)
+
+}
+
 
 exports.postRegister = async (req, res) => {
     try {
