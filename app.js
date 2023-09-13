@@ -44,10 +44,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 /**
  * Middleware for routes where User should be connected 
  */
-app.use("/private", authMiddleware.isLoggedIn)
+app.use("/private", (req, res, next)=>{
+
+    authMiddleware.isLoggedIn(req, res, next)
+} )
 
 
 app.use('/', usersRouter);

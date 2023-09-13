@@ -6,11 +6,11 @@ const bcryptjs = require('bcryptjs');
 // Chargement des variables d'environnement
 dotenv.config();
 
-const { isLoggedIn } = require("../middlewares/auth")
+const { isLoggedIn, VerifyToken } = require("../middlewares/auth")
 
 exports.getValidate = async(req, res) => { 
         console.log("POST validate req received");
-       const isUserLoggedIn = isLoggedIn(req, res);
+       const isUserLoggedIn = VerifyToken(req, res);
 
        res.send(isUserLoggedIn)
 
@@ -62,11 +62,15 @@ exports.postLogin = async (req, res) => {
             res.send(token);
         } else {
 
-            res.send("Invalid credentials, back to login");
+            res.status(401).send({
+                message : "Invalid credentials, back to login"
+            });
            
         }
     } catch (error) {
-        res.send(error);
+        res.status(401).send({
+            message : error.message
+        });
     
     };          
 
