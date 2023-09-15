@@ -4,6 +4,8 @@ const Caracter = require("../models/Caracter")
 
 exports.postCreate = async (req, res) => { 
 
+    console.log(req.body);
+
     try {
         console.log("Caracter creation POST request received");
         await Caracter.create({
@@ -20,18 +22,13 @@ exports.postCreate = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-
-
-
-
-
 }
 
 
 exports.getCaracters = async (req, res) => {
     try {
         
-        console.log("Get method caracter method received");
+        console.log("Get m  ethod caracter method received");
         const caracters = await Caracter.find()
         res.send(caracters)
     } catch (error) {

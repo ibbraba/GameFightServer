@@ -31,7 +31,7 @@ const caracterSchema = new mongoose.Schema({
 
     speed : {
         type : Number,
-        required : true
+        required : false
     }
 
 

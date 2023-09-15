@@ -12,7 +12,9 @@ router.post("/login", authController.postLogin);
 
 router.post("/private/create", gameController.postCreate, isLoggedIn)
 
-router.get("/private/caracter", gameController.getCaracters, isLoggedIn)
+router.get("/private/caracters", gameController.getCaracters, isLoggedIn)
+
+router.get("private/caracter")
 
 router.get("/validate", authController.getValidate)
 
